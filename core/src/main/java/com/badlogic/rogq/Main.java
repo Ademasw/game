@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -23,6 +24,8 @@ public class Main implements ApplicationListener {
     SpriteBatch batch;
     FitViewport viewport;
 
+    Sprite starSprite;
+
     @Override
     public void create() {
         // Prepare your application here.
@@ -33,6 +36,8 @@ public class Main implements ApplicationListener {
 
         batch = new SpriteBatch();
         viewport = new FitViewport(8,5);
+        starSprite = new Sprite(hat);
+        starSprite.setSize(1, 1);
     }
 
     @Override
@@ -50,15 +55,31 @@ public class Main implements ApplicationListener {
     }
 
     private void input() {
+        float speed = .50f;
+        if (Gdx.input.isKeyJustPressed(Keys.D)) {
+            starSprite.translateX(speed);
 
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.A)) {
+            starSprite.translateX(-speed);
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.W)) {
+            starSprite.translateY(speed);
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.S)) {
+            starSprite.translateY(-speed);
+        }
     }
-
     private void draw() {
         ScreenUtils.clear(Color.GRAY);
         viewport.apply();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
-        batch.draw(hat, 0, 0, 1, 1);
+        float width = viewport.getWorldWidth();
+        float height = viewport.getWorldHeight();
+
+        batch.draw(star, 0, 0, width, height);
+        starSprite.draw(batch);
 
         batch.end();
     }
